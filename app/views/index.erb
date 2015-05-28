@@ -1,0 +1,20 @@
+
+
+<div class="container">
+  <h1>Welcome to the Pirated Bit.Ly!</h1>
+  <p>Ahoy, mateys!</p>
+
+  <img src="https://piratebay.org/img/tpb.jpg" alt="Smiley face" align="middle">
+  <form action="/urls" method="post">
+    URL to be shortened<br>
+    <input type="text" name="urltobeshortened">
+    <input type="submit" value="Submit">
+  </form>
+
+  <p>List of URLs that we've pirated</p>
+  <% Url.first(10).each do |x| %>
+  <p><a href="<%= x.url %>"><%= x.url %></a><p>
+<!--   <p><%= x.url %></p> -->
+  <% end %>
+
+</div>
