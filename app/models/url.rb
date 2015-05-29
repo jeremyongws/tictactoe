@@ -1,6 +1,7 @@
 class Url < ActiveRecord::Base
   validates :url, format: { with: /(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/, message: "is invalid"}
-  validates :key. uniqueness: true
+  validates :key, uniqueness: true
+  belongs_to :user
   before_save :generate_short_url
 
   # Remember to create a migration!

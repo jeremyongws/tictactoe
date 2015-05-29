@@ -4,6 +4,7 @@ class CreateUrls < ActiveRecord::Migration
       x.string :url
       x.string :key
       x.integer :counter, :default => 0
+      x.integer :user_id
     end
   end
 end

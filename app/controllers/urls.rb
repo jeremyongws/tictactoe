@@ -5,12 +5,23 @@ get '/' do
 end
 
 post '/urls' do
-  @url = Url.new(url: params[:urltobeshortened])
-  if @url.save
-    @key = @url.key
-    redirect to("/urls/#{@key}")
+  byebug
+  if session[:id] != nil
+    @url = Url.new(url: params[:urltobeshortened], user_id: session[:id])
+    if @url.save
+      @key = @url.key
+      redirect to("/urls/#{@key}")
+    else
+      erb :index
+    end
   else
-    erb :index
+    @url = Url.new(url: params[:urltobeshortened])
+    if @url.save
+      @key = @url.key
+      redirect to("/urls/#{@key}")
+    else
+      erb :index
+    end
   end
 end
 
@@ -21,6 +32,7 @@ end
 # e.g., /q6bda
 get '/:short_url' do
   @url = Url.where(key: params["short_url"])[0]
+  # byebug
   @url.counter += 1
   @url.save
   if @url.url.include?("http://") || @url.url.include?("https://")
