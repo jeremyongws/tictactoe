@@ -15,13 +15,13 @@ get '/games/new' do
   # redirect to "/games/#{@game.id}"
 end
 
-# get '/games/:game_id' do
+get '/game/:game_id' do
+  erb :game
+end
 
-#   @games = Game.where(player2_id: nil)
-
-
-# erb :lobby
-# end
+get '/play_game' do
+  erb :game
+end
 
 get '/games/:game_id/join' do
 
