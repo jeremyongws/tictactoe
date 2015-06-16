@@ -3,13 +3,55 @@
   <h1>Welcome to the Pirated Bit.Ly!</h1>
   <p>Ahoy, mateys!</p>
 
-  <br><br>
-  <%= "Hi #{session[:email]}," %>
-  <p>Here is your list of shortened URLs ye landlubber!</p>
-  <% urls = Url.where(user_id: session[:id]) %>
-  <% urls.each do |url| %>
-  <p><a href="<%= "localhost:9393/#{url.key}" %>"><%= "localhost:9393/#{url.key}   " %> <br> </a> <%= "Times clicked : #{url.counter.to_s}" %><p>
-  <% end %>
+  <div>
+      <div class="btn btn-default new-game">
+        <a class="new_game" href="/games/new">Create a new game</a>
+      </div>
+  </div>
+
+    <h2>Join a Game</h2>
+
+    <div class="link">
+    <% @games.each do |game| %>
+
+
+        <a href="/games/<%=game.id%>/join">
+
+
+
+        <p>Game<%= game.id %></p>
+
+
+    <% end %>
+    </div>
 
   <a href="/logout" >Log Out</a>
 </div>
+
+<script>
+
+$(document).ready(function(){
+
+  $(".new_game").click(function(e){
+    e.preventDefault();
+    console.log("new_game")
+     $.ajax({
+      type: "get",
+      url: "/games/new",
+      dataType: "json"
+    })
+    .done(function(response){
+
+       var game_id = response["game_id"]
+       $(".link").append("<a href=\"/games/" + game_id + "/join\"><p>Game"+ game_id +"</p></a>")
+
+    });
+
+});
+
+});
+
+</script>
+
+
+

@@ -1,37 +1,35 @@
-# post '/urls' do
-#   byebug
-#   if session[:id] != nil
-#     @url = Url.new(url: params[:urltobeshortened], user_id: session[:id])
-#     if @url.save
-#       @key = @url.key
-#       redirect to("/urls/#{@key}")
-#     else
-#       erb :index
-#     end
-#   else
-#     @url = Url.new(url: params[:urltobeshortened])
-#     if @url.save
-#       @key = @url.key
-#       redirect to("/urls/#{@key}")
-#     else
-#       erb :index
-#     end
-#   end
+get '/lobby' do
+
+  @games = Game.where(player2_id: nil)
+
+  erb :lobby
+end
+
+get '/games/new' do
+  @user = User.find(session[:id])
+
+  @game = Game.create(player1_id: @user.id)
+
+  {game_id: @game.id}.to_json
+
+  # redirect to "/games/#{@game.id}"
+end
+
+# get '/games/:game_id' do
+
+#   @games = Game.where(player2_id: nil)
+
+
+# erb :lobby
 # end
 
-# get '/urls/:key' do
-#   erb :show_shortened_url
-# end
+get '/games/:game_id/join' do
 
-# # e.g., /q6bda
-# get '/:short_url' do
-#   @url = Url.where(key: params["short_url"])[0]
-#   # byebug
-#   @url.counter += 1
-#   @url.save
-#   if @url.url.include?("http://") || @url.url.include?("https://")
-#     redirect("#{@url.url}")
-#   else
-#     redirect("http://#{@url.url}")
-#   end
-# end
+ @user = User.find(session[:id])
+ @game = Game.find(params[:game_id])
+ @game.update(player2_id: @user.id)
+
+erb :game
+
+end
+

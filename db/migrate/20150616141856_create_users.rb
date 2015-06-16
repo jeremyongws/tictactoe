@@ -1,5 +1,5 @@
 class CreateUsers < ActiveRecord::Migration
-  validates :username, uniqueness: true
+
   def change
     create_table :users do |u|
       u.string :username, null: false
