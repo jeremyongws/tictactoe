@@ -19,9 +19,9 @@ get '/game/:game_id' do
   erb :game
 end
 
-get '/play_game' do
-  erb :game
-end
+# get '/play_game' do
+#   erb :game
+# end
 
 get '/games/:game_id/join' do
 
@@ -36,15 +36,22 @@ end
 post '/game/moves' do
 
 
-  @game = Game.find(params[:game])
-  byebug
-  if params[:player] == 1
+
+ @game = Game.find(params[:game])
+
+
+  if params[:player] == "1"
     @user = User.find(@game.player1_id)
+    @activePlayer = 2
   else
     @user = User.find(@game.player2_id)
+    @activePlayer = 1
   end
 
-  move = Move.create(game_id: params[:gameId], user_id: @user.id, box: params[:box], move_num: params[:moveNum])
+
+  move = Move.create(game_id: @game.id, user_id: @user.id, box: params[:box], move_num: params[:move])
+
+  {activePlayer: @activePlayer}.to_json
 
   # //get move and active player
 
