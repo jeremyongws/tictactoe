@@ -12,6 +12,7 @@
     <h2>Join a Game</h2>
 
     <div class="link">
+    <% if !@games.nil? %>
     <% @games.each do |game| %>
 
 
@@ -22,6 +23,7 @@
         <p>Game<%= game.id %></p>
 
 
+    <% end %>
     <% end %>
     </div>
 

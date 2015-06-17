@@ -33,3 +33,32 @@ erb :game
 
 end
 
+post '/game/moves' do
+
+
+  @game = Game.find(params[:game])
+  byebug
+  if params[:player] == 1
+    @user = User.find(@game.player1_id)
+  else
+    @user = User.find(@game.player2_id)
+  end
+
+  move = Move.create(game_id: params[:gameId], user_id: @user.id, box: params[:box], move_num: params[:moveNum])
+
+  # //get move and active player
+
+  # //send back active player
+end
+
+      # m.integer :game_id
+      # m.integer :user_id
+      # m.string :box
+      # m.integer :move_num
+
+
+     #  g.integer :player1_id
+     #  g.integer :player2_id
+     #  g.integer :starter_id
+     #  g.integer :winner_id
+     #  g.boolean :ended, null: false, default: false

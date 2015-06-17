@@ -26,19 +26,43 @@
 
     var player1 = new Player(1);
     var player2 = new Player(2);
+    var activePlayer;
     var game = new Game(player1, player2);
+    var moveNum = 0;
+    var gameId = "<%= @game.id %>"
 
     $("#pick").click(function(e){
       e.preventDefault();
-      debugger
-      $(this)[0].disable();
+      moveNum ++;
+
+      $(this).prop('disabled', true);
       if (player1.active) {
-        $(this)[0].attr('id', '1');
+        $(this).attr('id', '1');
+        activePlayer = 1;
+
       } else {
-        $(this)[0].attr('id', '2');
+        $(this).attr('id', '2');
+        activePlayer = 2;
+
       };
+      $.ajax({
+        type: "post",
+        url: "/game/moves",
+        data: { player: activePlayer, move: moveNum, box: $(this).parents("td").attr('id'), game: gameId},
+        success: function(){
+
+          $("div.container").append("<p>Tweeted to Pinpin's little bird!</p>")
+            },
+      });
+
+
     });
-  })
+  });
+
+
+
+
+
 
     // function checkForWinner(squares, players, currentTurn) {
     //   if (squares[0].innerText == players[currentTurn] &&
@@ -75,6 +99,8 @@
     //     return true;
     //   return false;
     // }
+
+
 
 </script>
 
