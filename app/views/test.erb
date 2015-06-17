@@ -1,0 +1,31 @@
+<table id="tictac">
+  <tbody>
+    <% 3.times do |row| %>
+      <tr>
+      <% 3.times do |square| %>
+          <% @moves.each do |move| %>
+            <% if "cell#{(square + 1).to_s}#{(row + 1).to_s}" ==  move.box %>
+              <td id=<%="cell#{(square + 1).to_s}#{(row + 1).to_s}"%>>
+                <form class="test ">
+                  <input type="hidden" name="coords" value=<%="#{square + 1},#{(row + 1)}"%>>
+                  <% if move.player_num == 1 %>
+                    <input id="pick" style="height:100px; width:100px" type="submit" name="square" value="X" width="100" height ="100">
+                  <% else %>
+                    <input id="pick" style="height:100px; width:100px" type="submit" name="square" value="O" width="100" height ="100">
+                  <% end %>
+                </form>
+              </td>
+            <% else %>
+              <td id=<%="cell#{(square + 1).to_s}#{(row + 1).to_s}"%>>
+                <form class="test">
+                  <input type="hidden" name="coords" value=<%="#{square + 1},#{(row + 1)}"%>>
+                  <input id="pick" style="height:100px; width:100px" type="submit" name="square" value="." width="100" height ="100">
+                </form>
+              </td>
+            <% end %>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

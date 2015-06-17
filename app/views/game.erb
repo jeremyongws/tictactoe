@@ -1,6 +1,7 @@
 <script>
   $(document).ready(function(){
 
+    // debugger
     function Player(playernum){
       this.playernum = playernum;
       this.active = false;
@@ -21,7 +22,7 @@
     function Game(player1, player2){
       alert("P1 will start first")
       this.current_turn = 0
-      player1.active = true
+      player2.active = true
     }
 
     var squares = $(document).find("input#pick")
@@ -30,28 +31,34 @@
     var activePlayer;
     var game = new Game(player1, player2);
     var moveNum = 0;
-    var gameId = "<%= @game.id %>"
+    var gameId = "<%= @game.id %>";
+
+    if ("<%= @player %>" == 1) {
+      var currentPlayer = player1;
+    } else {
+      var currentPlayer = player2;
+    }
+
+    if (currentPlayer.active == false){
+      $("td #pick").prop('disabled', true);
+      // setInterval(fetchStatus(gameId), 3000);
+      setInterval(function(){fetchStatus(gameId)}, 3000);
+    }
 
     $("td #pick").click(function(e){
       e.preventDefault();
       moveNum ++;
       $(this).prop('disabled', true);
-      if (player1.active) {
-        this.value = "X"
-        $(this).attr('id', '1');
-        activePlayer = 1;
-        if (checkForWinner(squares, player1)) {
-          alert("Player 1 has won!")
+      if (currentPlayer.active) {
+
+        this.value = currentPlayer.marker;
+        $(this).attr('id', currentPlayer.playernum);
+        activePlayer = currentPlayer.playernum;
+        currentPlayer.active = false
+        if (checkForWinner(squares, currentPlayer)) {
+          alert("Player X has won!")
         }
-        // debugger
-      } else {
-        this.value = "O"
-        $(this).attr('id', '2');
-        activePlayer = 2;
-        if (checkForWinner(squares, player2)) {
-          alert("Player 2 has won!")
-        }
-      };
+      }
       $.ajax({
         type: "post",
         url: "/game/moves",
@@ -60,18 +67,23 @@
       })
        .done(function(response){
           activePlayer = response["activePlayer"];
-          if (activePlayer == 2) {
-            player2.active = true
-            player1.active = false
-          } else {
-            player2.active = false
-            player1.active = true
+          if (activePlayer == currentPlayer.playernum) {
+            currentPlayer.active = true
           }
           $("div.container").append("Successful, please wait for your opponent's turn..")
         });
-    });
-  })
+      });
+   })
 
+    function fetchStatus(gameId){
+      $.ajax({
+        type: "get",
+        url: "/game/status/" + gameId
+      }).done(function(response){
+        $( "table" ).replaceWith(response);
+        $("table").append("lulz");
+      });
+    }
 
   //NEED ADAPTATION TO CHECK FOR ID
     function checkForWinner(squares, player) {
@@ -130,6 +142,8 @@
 <div class="container">
   <h1>Welcome to the Pin Pin Tic Tac Toe!</h1>
 
+  Current player <%= @player %>
+
     <table id="tictac">
       <tbody>
         <% 3.times do |row| %>
@@ -147,6 +161,7 @@
     </table>
 
   <br>
+  <a href="/game/status/<%= @game.id %>" >TESTING BOARD REBUILD</a>
   <a href="/users/new" >Create Your Account</a>
 
 </div>

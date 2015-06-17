@@ -9,20 +9,14 @@
       </div>
   </div>
 
+    <a href="/play"
     <h2>Join a Game</h2>
 
     <div class="link">
     <% if !@games.nil? %>
     <% @games.each do |game| %>
-
-
         <a href="/games/<%=game.id%>/join">
-
-
-
         <p>Game<%= game.id %></p>
-
-
     <% end %>
     <% end %>
     </div>
@@ -32,26 +26,7 @@
 
 <script>
 
-$(document).ready(function(){
 
-  $(".new_game").click(function(e){
-    e.preventDefault();
-    console.log("new_game")
-     $.ajax({
-      type: "get",
-      url: "/games/new",
-      dataType: "json"
-    })
-    .done(function(response){
-
-       var game_id = response["game_id"]
-       $(".link").append("<a href=\"/games/" + game_id + "/join\"><p>Game"+ game_id +"</p></a>")
-
-    });
-
-});
-
-});
 
 </script>
 

@@ -9,25 +9,34 @@ get '/games/new' do
   @user = User.find(session[:id])
 
   @game = Game.create(player1_id: @user.id)
+  @player = 1
 
-  {game_id: @game.id}.to_json
+  # {game_id: @game.id}.to_json
 
-  # redirect to "/games/#{@game.id}"
+  erb :game
+
 end
 
 get '/game/:game_id' do
   erb :game
 end
 
-# get '/play_game' do
-#   erb :game
-# end
+get '/play_game' do
+
+  @user = User.find(session[:id])
+
+
+
+  erb :game
+end
 
 get '/games/:game_id/join' do
 
  @user = User.find(session[:id])
  @game = Game.find(params[:game_id])
  @game.update(player2_id: @user.id)
+ @player = 2
+
 
 erb :game
 
@@ -47,13 +56,20 @@ post '/game/moves' do
   end
 
 
-  move = Move.create(game_id: @game.id, user_id: @user.id, box: params[:box], move_num: params[:move])
+  @move = Move.create(game_id: @game.id, user_id: @user.id, box: params[:box], move_num: params[:move], player_num: params[:player].to_i)
   # byebug
-  {activePlayer: @activePlayer}.to_json
+  {activePlayer: @activePlayer }.to_json
 
   # //get move and active player
 
   # //send back active player
+end
+
+get '/game/status/:game_id' do
+  @game = Game.find(params[:game_id])
+  @moves = @game.moves
+  # byebug
+  erb :test, layout: false
 end
 
       # m.integer :game_id
