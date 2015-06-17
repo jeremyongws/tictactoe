@@ -3,12 +3,8 @@
 
     function Player(playernum){
       this.playernum = playernum;
+      this.choices = [];
       this.active = false;
-      if (playernum == 1){
-        this.marker = "X"
-      } else if (playernum == 2){
-        this.marker = "O"
-      }
 
       if (this.active = false){
         $("td").prop('disabled', true);
@@ -20,11 +16,12 @@
 
     function Game(player1, player2){
       alert("P1 will start first")
+      var squares = $(document).find("td")
       this.current_turn = 0
       player1.active = true
     }
 
-    var squares = $(document).find("input#pick")
+    // debugger
     var player1 = new Player(1);
     var player2 = new Player(2);
     var activePlayer;
@@ -35,22 +32,17 @@
     $("td #pick").click(function(e){
       e.preventDefault();
       moveNum ++;
+
       $(this).prop('disabled', true);
       if (player1.active) {
         this.value = "X"
         $(this).attr('id', '1');
         activePlayer = 1;
-        if (checkForWinner(squares, player1)) {
-          alert("Player 1 has won!")
-        }
-        // debugger
+        debugger
       } else {
         this.value = "O"
         $(this).attr('id', '2');
         activePlayer = 2;
-        if (checkForWinner(squares, player2)) {
-          alert("Player 2 has won!")
-        }
       };
       $.ajax({
         type: "post",
@@ -59,60 +51,56 @@
         data: { player: activePlayer, move: moveNum, box: $(this).parents("td").attr('id'), game: gameId}
       })
        .done(function(response){
+          debugger
           activePlayer = response["activePlayer"];
-          if (activePlayer == 2) {
-            player2.active = true
-            player1.active = false
-          } else {
-            player2.active = false
-            player1.active = true
-          }
-          $("div.container").append("Successful, please wait for your opponent's turn..")
+
+          $("div.container").append("Successful")
         });
+
     });
   })
 
 
   //NEED ADAPTATION TO CHECK FOR ID
-    function checkForWinner(squares, player) {
-      if (squares[0].value == player.marker &&
-          squares[1].value == player.marker &&
-          squares[2].value == player.marker)
+    function checkForWinner(squares, players, currentTurn) {
+      if (squares[0].innerText == players[currentTurn] &&
+          squares[1].innerText == players[currentTurn] &&
+          squares[2].innerText == players[currentTurn])
         return true;
-      if (squares[3].value == player.marker &&
-          squares[4].value == player.marker &&
-          squares[5].value == player.marker)
+      if (squares[3].innerText == players[currentTurn] &&
+          squares[4].innerText == players[currentTurn] &&
+          squares[5].innerText == players[currentTurn])
         return true;
-      if (squares[6].value == player.marker &&
-          squares[7].value == player.marker &&
-          squares[8].value == player.marker)
+      if (squares[6].innerText == players[currentTurn] &&
+          squares[7].innerText == players[currentTurn] &&
+          squares[8].innerText == players[currentTurn])
         return true;
-      if (squares[0].value == player.marker &&
-          squares[3].value == player.marker &&
-          squares[6].value == player.marker)
+      if (squares[0].innerText == players[currentTurn] &&
+          squares[3].innerText == players[currentTurn] &&
+          squares[6].innerText == players[currentTurn])
         return true;
-      if (squares[1].value == player.marker &&
-          squares[4].value == player.marker &&
-          squares[7].value == player.marker)
+      if (squares[1].innerText == players[currentTurn] &&
+          squares[4].innerText == players[currentTurn] &&
+          squares[7].innerText == players[currentTurn])
         return true;
-      if (squares[2].value == player.marker &&
-          squares[5].value == player.marker &&
-          squares[8].value == player.marker)
+      if (squares[2].innerText == players[currentTurn] &&
+          squares[5].innerText == players[currentTurn] &&
+          squares[8].innerText == players[currentTurn])
         return true;
-      if (squares[0].value == player.marker &&
-          squares[4].value == player.marker &&
-          squares[8].value == player.marker)
+      if (squares[0].innerText == players[currentTurn] &&
+          squares[4].innerText == players[currentTurn] &&
+          squares[8].innerText == players[currentTurn])
         return true;
-      if (squares[2].value == player.marker &&
-          squares[4].value == player.marker &&
-          squares[6].value == player.marker)
+      if (squares[2].innerText == players[currentTurn] &&
+          squares[4].innerText == players[currentTurn] &&
+          squares[6].innerText == players[currentTurn])
         return true;
       return false;
     }
 
   function isFullBoard(squares) {
     for (var i = 0, len = squares.length; i < len; i++) {
-      if (moveNum != 9) {
+      if (squares[i].innerText.length == 0) {
         return false;
       } else {
         return true;

@@ -1,7 +1,7 @@
 get '/lobby' do
 
   @games = Game.where(player2_id: nil)
-
+  # byebug
   erb :lobby
 end
 
@@ -35,8 +35,6 @@ end
 
 post '/game/moves' do
 
-
-
  @game = Game.find(params[:game])
 
 
@@ -50,7 +48,7 @@ post '/game/moves' do
 
 
   move = Move.create(game_id: @game.id, user_id: @user.id, box: params[:box], move_num: params[:move])
-
+  # byebug
   {activePlayer: @activePlayer}.to_json
 
   # //get move and active player
