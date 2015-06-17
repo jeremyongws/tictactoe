@@ -6,15 +6,16 @@
       this.active = false;
 
       if (this.active = false){
-        $("button").prop('disabled', true);
+        $("td").prop('disabled', true);
       } else {
-        $("button").prop('disabled', false);
-        $("button.picked").prop('disabled', true);
+        $("td").prop('disabled', false);
+        $("td.picked").prop('disabled', true);
       }
     }
 
     function Game(player1, player2){
       alert("X will start first")
+      var squares = $(document).find("td")
       var current_turn = 0
       var dieroll = Math.random()
       if (dieroll <= 0.5) {
